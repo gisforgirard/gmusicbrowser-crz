@@ -2,7 +2,7 @@ PACKAGE = gmusicbrowser
 VERSION = $(shell grep "^ *VERSIONSTRING" gmusicbrowser.pl |head -n 1 |grep -Eo [.0-9]+)
 
 
-prefix		= usr
+prefix		= usr/local
 bindir 		= ${DESTDIR}/${prefix}/bin
 appdir		= ${DESTDIR}/${prefix}/share/applications
 datadir		= ${DESTDIR}/${prefix}/share
