@@ -6585,7 +6585,11 @@ sub PrefAudio
 	#equalizer
 	my $EQbut=Gtk2::Button->new(_"Open Equalizer");
 	$EQbut->signal_connect(clicked => sub { OpenSpecialWindow('Equalizer'); });
-	my $EQcheck=NewPrefCheckButton(use_equalizer => _"Use Equalizer", watch=>1, cb=>sub { SetEqualizer(active=>$::Options{use_equalizer}); });
+	my $EQcheck=NewPrefCheckButton(use_equalizer => _"Use Equalizer", watch=>1,
+		cb => sub {
+			$::Options{PLUGIN_MEQUALIZER_EQU_AVAIL} = $::Options{use_equalizer} ? 1 : 0;
+			SetEqualizer(active=>$::Options{use_equalizer});
+		});
 	$sg1->add_widget($EQcheck);
 	$sg2->add_widget($EQbut);
 	my $EQbox=Hpack($EQcheck,$EQbut);

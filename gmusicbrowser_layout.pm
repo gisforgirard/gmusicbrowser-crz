@@ -5415,6 +5415,14 @@ sub new
 	my $turnon= $self->{turnon}= Gtk2::Button->new(_"Turn equalizer on");
 	$turnon->signal_connect(clicked=> \&button_cb, 'turn_on');
 
+	my $turnoff = $self->{turnoff}= Gtk2::Button->new(_"Turn equalizer off");
+	$turnoff->signal_connect(clicked=> \&button_cb, 'turn_off');
+	my $save_preset = $self->{save_preset} = Gtk2::CheckButton->new(_"Append to current song");
+	$save_preset->signal_connect(clicked => sub {
+		::GMB::Plugin::MEQUALIZER::Save($_[0]->get_active);
+	});
+	$mainbox->pack_start($_,0,0,0) for $turnoff, $save_preset;
+
 	unless ($opt->{notoggle})
 	{	my $toggle= $self->{toggle}= Gtk2::ToggleButton->new;
 		$toggle->add(Gtk2::Image->new_from_stock('gtk-edit','menu'));
@@ -5477,6 +5485,8 @@ sub combo_changed_cb
 		return
 	}
 	::SetEqualizer(preset=>$current) if $current ne '';
+	$self->{save_preset}->set_active(0);
+	$::Options{PLUGIN_MEQUALIZER_EQU_PRESET} = $::Options{equalizer_preset};
 }
 sub button_cb
 {	my $self= ::find_ancestor($_[0],__PACKAGE__);
@@ -5497,6 +5507,13 @@ sub button_cb
 	}
 	elsif ($action eq 'turn_on')
 	{	::SetEqualizer(active=>1);
+		$self->{save_preset}->set_active(0);
+		$::Options{PLUGIN_MEQUALIZER_EQU_AVAIL} = 1;
+	}
+	elsif ($action eq 'turn_off')
+	{	::SetEqualizer(active=>0);
+		$self->{save_preset}->set_active(0);
+		$::Options{PLUGIN_MEQUALIZER_EQU_AVAIL} = 0;
 	}
 }
 
@@ -5571,6 +5588,15 @@ sub update_buttons
 		$self->{sbutton}->set_sensitive($ok);
 		my $current= $self->{combo}->get_active_text;
 		$self->{rbutton}->set_sensitive(defined $current && exists $self->{presets}{$current});
+	}
+	if (my $s = Songs::Display($::SongID, 'version')) {
+		if ($s eq $::Options{equalizer_preset}) {
+			$self->{save_preset}->set_active(1);
+		} else {
+			$self->{save_preset}->set_active(0);
+		}
+	} else {
+		$self->{save_preset}->set_active(0);
 	}
 }
 
