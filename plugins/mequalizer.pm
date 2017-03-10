@@ -16,7 +16,6 @@ package GMB::Plugin::MEQUALIZER;
 use strict;
 use warnings;
 use constant OPT => 'PLUGIN_MEQUALIZER_';
-use Data::Dumper;
 
 my $handle;
 
@@ -50,7 +49,7 @@ sub Save {
                 Songs::Set($::SongID, version => "");
             }
         }
-    };
+    }
 }
 
 sub Start {
