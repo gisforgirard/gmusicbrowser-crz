@@ -60,5 +60,16 @@ Requirements
     - gstreamer
 
 
+Tips & Tricks
+=============
+
+You can add shortcut key to open equalizer window, or to check for new/updated/deleted
+songs not only at startup.
+![image (44 KB)][scrshotpref img]
+
 [scrshot img]:
 https://raw.githubusercontent.com/chinarulezzz/gmusicbrowser-crz/master/scrshot.png
+
+[scrshotpref img]:
+https://raw.githubusercontent.com/chinarulezzz/gmusicbrowser-crz/master/scrshot_pref.png
+
